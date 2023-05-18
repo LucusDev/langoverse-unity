@@ -6,6 +6,7 @@
 - open langoverse with unity version 2021.3.25f1
 - go to file/build Settings
 - inside platform, click on android/ios and click switch platform
+- if you are compiling ios, go to file/ build settings/ player settings, Select the Simulator SDK on Target SDK if you are compiling for testing and choose Device SDK if you are compiling for the real build.
 - then, go to flutter and click export android/ios (release)
 
 - then, go back to fultter project.
