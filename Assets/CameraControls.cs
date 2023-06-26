@@ -5,12 +5,11 @@ using UnityEngine.UI;
 
 public class CameraControls : MonoBehaviour
 {
-    private float rotationSpeed = 50.0f;
+    public float rotationSpeed = 1.0f;
 
-    // Start is called before the first frame update
     void Start()
     {
-       
+
     }
 
     // Update is called once per frame
@@ -18,18 +17,32 @@ public class CameraControls : MonoBehaviour
     {
         CamOrbit();
     }
+
+    //private void CamOrbit()
+    //{
+    //    if (Input.touchCount == 1)
+    //    {
+    //        if (Input.GetAxis("Mouse Y") != 0 || Input.GetAxis("Mouse X") != 0)
+    //        {
+    //            float verticalInput = Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime;
+    //            float horizontalInput = Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
+    //            transform.Rotate(Vector3.right, verticalInput);
+    //            transform.Rotate(Vector3.down, horizontalInput, Space.World);
+    //        }
+    //    }
+    //}
     private void CamOrbit()
     {
-        if (Input.touchCount == 1)
+        if (Input.touchCount == 1 &&
+          Input.GetTouch(0).phase == TouchPhase.Moved)
         {
-            if (Input.GetAxis("Mouse Y") != 0 || Input.GetAxis("Mouse X") != 0)
-            {
-                float verticalInput = Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime;
-                float horizontalInput = Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
-                transform.Rotate(Vector3.right, verticalInput);
-                transform.Rotate(Vector3.down, horizontalInput, Space.World);
-            }
+            var touchDeltaPosition = Input.GetTouch(0).deltaPosition;
+            float verticalInput = touchDeltaPosition.y * rotationSpeed * Time.deltaTime;
+            float horizontalInput = touchDeltaPosition.x * rotationSpeed * Time.deltaTime;
+            transform.Rotate(Vector3.right, verticalInput);
+            transform.Rotate(Vector3.down, horizontalInput, Space.World);
+
         }
+
     }
-   
 }
