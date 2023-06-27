@@ -39,7 +39,6 @@ public class CameraControls : MonoBehaviour
             var touchDeltaPosition = Input.GetTouch(0).deltaPosition;
             float verticalInput = touchDeltaPosition.y * rotationSpeed * Time.deltaTime;
             float horizontalInput = touchDeltaPosition.x * rotationSpeed * Time.deltaTime;
-            transform.Rotate(Vector3.right, verticalInput);
             transform.Rotate(Vector3.down, horizontalInput, Space.World);
 
         }
