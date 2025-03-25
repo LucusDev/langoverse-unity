@@ -34,8 +34,11 @@ public class DownloadAssetList : MonoBehaviour
         {
             foreach (var building in buildings)
             {
-                Debug.Log($"Loading {building.building_name} from {building.asset_data_url}");
-                StartCoroutine(DownloadAndLoadAssetBundle(building));
+                if (!string.IsNullOrEmpty(building.asset_data_url))
+                {
+                    Debug.Log($"Loading {building.building_name} from {building.asset_data_url}");
+                    StartCoroutine(DownloadAndLoadAssetBundle(building));
+                }
             }
         }));
     }
@@ -94,12 +97,32 @@ public class DownloadAssetList : MonoBehaviour
                 yield break;
             }
 
-            yield return ProcessAssetBundle(bundle, building);
+            GameObject obj = null;
+            yield return StartCoroutine(ProcessAssetBundle(bundle, building, (result) => obj = result));
+            
             bundle.Unload(false);
+
+            // Add BuildingSceneLoader component if scene_data_url exists
+            if (!string.IsNullOrEmpty(building.scene_data_url))
+            {
+                Debug.Log("building.scene_data_url: " + building.scene_data_url);
+                BuildingSceneLoader sceneLoader = obj.AddComponent<BuildingSceneLoader>();
+                sceneLoader.sceneAssetBundleUrl = building.scene_data_url;
+                
+                // Add a collider for click detection
+                BoxCollider collider = obj.AddComponent<BoxCollider>();
+                // Automatically size the collider to fit the object
+                Renderer renderer = obj.GetComponent<Renderer>();
+                if (renderer != null)
+                {
+                    collider.size = renderer.bounds.size;
+                    collider.center = renderer.bounds.center;
+                }
+            }
         }
     }
 
-    private IEnumerator ProcessAssetBundle(AssetBundle bundle, Building building)
+    private IEnumerator ProcessAssetBundle(AssetBundle bundle, Building building, Action<GameObject> callback)
     {
         string[] assetNames = bundle.GetAllAssetNames();
         Debug.Log($"Assets in bundle ({building.building_name}): {string.Join(", ", assetNames)}");
@@ -107,6 +130,7 @@ public class DownloadAssetList : MonoBehaviour
         if (assetNames.Length == 0)
         {
             Debug.LogError($"No assets found in AssetBundle for {building.building_name}");
+            callback(null);
             yield break;
         }
 
@@ -114,6 +138,7 @@ public class DownloadAssetList : MonoBehaviour
         if (asset == null)
         {
             Debug.LogError($"Failed to load asset from bundle for {building.building_name}");
+            callback(null);
             yield break;
         }
 
@@ -123,6 +148,9 @@ public class DownloadAssetList : MonoBehaviour
             obj.transform.rotation = Quaternion.Euler(building.rotation_x, building.rotation_y, building.rotation_z);
             Debug.Log($"Successfully instantiated {building.building_name}");
         }
+
+        callback(obj);
+        yield return null;
     }
 
     private GameObject ProcessAsset(UnityEngine.Object asset, Building building)

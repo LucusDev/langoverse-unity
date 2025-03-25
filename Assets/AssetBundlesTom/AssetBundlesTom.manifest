@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 2783815002
+CRC: 417763303
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -7,4 +7,7 @@ AssetBundleManifest:
       Dependencies: {}
     Info_1:
       Name: wheel
+      Dependencies: {}
+    Info_2:
+      Name: testscene
       Dependencies: {}
