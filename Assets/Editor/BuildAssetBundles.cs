@@ -7,6 +7,6 @@ public class BuildAssetBundles
     {
         BuildPipeline.BuildAssetBundles("Assets/AssetBundlesTom", 
             BuildAssetBundleOptions.None, 
-            BuildTarget.StandaloneWindows); // Change to your target platform
+            BuildTarget.Android); // Change to your target platform
     }
 }
