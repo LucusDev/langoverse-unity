@@ -280,6 +280,12 @@ public class MapDownloader : MonoBehaviour
 
     private IEnumerator LoadAssetBundleFromFile(string filePath, MapData map)
     {
+        // Unload any currently loaded AssetBundle to avoid conflicts
+        if (MapManager.Instance.CurrentMapBundle != null)
+        {
+            MapManager.Instance.UnloadCurrentMap();
+        }
+
         AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(filePath);
         yield return request;
 
@@ -290,15 +296,18 @@ public class MapDownloader : MonoBehaviour
             yield break;
         }
 
+        string sceneName = null;
         try
         {
             string[] scenePaths = bundle.GetAllScenePaths();
             if (scenePaths.Length > 0)
             {
-                string sceneName = Path.GetFileNameWithoutExtension(scenePaths[0]);
+                sceneName = Path.GetFileNameWithoutExtension(scenePaths[0]);
                 PlayerPrefs.SetString("MapSceneName", sceneName);
                 PlayerPrefs.SetInt("MapID", map.mapid);
-                yield return SceneManager.LoadSceneAsync(sceneName);
+
+                // Set the current map in MapManager
+                MapManager.Instance.SetCurrentMap(sceneName, bundle);
             }
             else
             {
@@ -308,6 +317,9 @@ public class MapDownloader : MonoBehaviour
                     GameObject prefab = bundle.LoadAsset<GameObject>(assetNames[0]);
                     if (prefab != null)
                         Instantiate(prefab);
+
+                    // Set the current map in MapManager
+                    MapManager.Instance.SetCurrentMap(null, bundle);
                 }
                 else
                 {
@@ -315,9 +327,14 @@ public class MapDownloader : MonoBehaviour
                 }
             }
         }
-        finally
+        catch (Exception ex)
         {
-            bundle.Unload(false);
+            Debug.LogError($"Error loading AssetBundle: {ex.Message}");
+        }
+
+        if (!string.IsNullOrEmpty(sceneName))
+        {
+            yield return SceneManager.LoadSceneAsync(sceneName);
         }
     }
 }
