@@ -36,7 +36,7 @@ public class DownloadAssetList : MonoBehaviour
     {
         // Load local buildings data
         LoadLocalBuildingsData();
-        
+        mapId = PlayerPrefs.GetInt("mapId");
         // Get buildings by map ID
         StartCoroutine(GetBuildingsByMapId(mapId.ToString(), buildings =>
         {

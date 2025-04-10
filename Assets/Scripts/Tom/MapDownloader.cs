@@ -286,6 +286,7 @@ public class MapDownloader : MonoBehaviour
     
     private void LoadMap(int mapId)
     {
+        PlayerPrefs.SetInt("mapId", mapId);
         Debug.Log($"Loading map with ID: {mapId}");
         
         // Find the map data for this ID

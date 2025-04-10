@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 1567354694
+CRC: 25360664
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -9,16 +9,18 @@ AssetBundleManifest:
       Name: wheel
       Dependencies: {}
     Info_2:
-      Name: testscene
-      Dependencies: {}
-    Info_3:
       Name: sphere
       Dependencies: {}
+    Info_3:
+      Name: map1
+      Dependencies:
+        Dependency_0: wheel
+        Dependency_1: sphere
     Info_4:
-      Name: allmap
+      Name: interiorscene1
       Dependencies: {}
     Info_5:
-      Name: allmap2
+      Name: map2
       Dependencies:
         Dependency_0: wheel
         Dependency_1: sphere
