@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
 
-public class DownloadAssetList : MonoBehaviour
+public class DownloadBuildingList : MonoBehaviour
 {
     private string supabaseUrl = "https://nzrlskengaeocyqxgkug.supabase.co";
     private string supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im56cmxza2VuZ2Flb2N5cXhna3VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1Mzg0NTYsImV4cCI6MjA1ODExNDQ1Nn0.aPqgdGBFbwm7R0G3zzUceopLSrbZ-1fY1ikdK9miRmU"; // Hide API keys in production!

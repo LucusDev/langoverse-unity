@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/LangoMap.unity
     guid: 6e3c4b5531e481c40b0250ec508e3060
-  - enabled: 1
+  - enabled: 0
     path: Assets/mapManager.unity
     guid: ea3e15f8b2acbc44994446f413c796d1
   - enabled: 0
